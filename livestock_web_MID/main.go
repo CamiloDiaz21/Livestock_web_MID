@@ -1,7 +1,7 @@
 package main
 
 import (
-	_ "livestock_web_MID/routers"
+	_ "github.com/sena_2824182/Livestock_web_MID/livestock_web_MID/routers"
 
 	"github.com/astaxie/beego"
 )
