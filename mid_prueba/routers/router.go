@@ -25,8 +25,7 @@ func init() {
 				&controllers.PaisesController{},
 			),
 		),
-		
 	)
 	beego.AddNamespace(ns)
-	
+
 }

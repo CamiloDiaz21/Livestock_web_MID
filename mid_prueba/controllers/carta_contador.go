@@ -121,8 +121,6 @@ func (c *Carta_contadorController) GetOne() {
 	c.ServeJSON()
 }
 
-
-
 // GetAll ...
 // @Title GetAll
 // @Description get Carta_contador
@@ -237,5 +235,3 @@ func (c *Carta_contadorController) Delete() {
 
 	c.ServeJSON()
 }
-
-

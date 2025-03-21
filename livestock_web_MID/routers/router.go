@@ -8,21 +8,20 @@
 package routers
 
 import (
-	"livestock_web_MID/controllers"
-
 	"github.com/astaxie/beego"
+	"github.com/sena_2824182/Livestock_web_MID/livestock_web_MID/controllers"
 )
 
 func init() {
 	ns := beego.NewNamespace("/v1",
-		beego.NSNamespace("/object",
+		beego.NSNamespace("/usu_comun",
 			beego.NSInclude(
-				&controllers.ObjectController{},
+				&controllers.Registro_usucomunController{},
 			),
 		),
-		beego.NSNamespace("/user",
+		beego.NSNamespace("/usu_vendedor",
 			beego.NSInclude(
-				&controllers.UserController{},
+				&controllers.Registro_usvendedorController{},
 			),
 		),
 	)
