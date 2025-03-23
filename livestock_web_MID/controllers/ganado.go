@@ -1,7 +1,12 @@
 package controllers
 
 import (
+	"encoding/json"
+	"fmt"
+	"log"
+
 	"github.com/astaxie/beego"
+	"github.com/sena_2824182/Livestock_web_MID/livestock_web_MID/services"
 )
 
 // GanadoController operations for Ganado
@@ -37,8 +42,29 @@ func (c *GanadoController) Post() {
 // @Failure 403 :id is empty
 // @router /:id [get]
 func (c *GanadoController) GetOne() {
+	fmt.Println("Funcion Get")
+	// id_ingreso := c.Ctx.Input.Param(":id")
+	// 	fmt.Println("El id ingresado es:", id_ingreso)
+	// body, _ := services.Metodo_get(  "postgres://postgres:postgres@127.0.0.1/DATOS_VENTAS?sslmode=disable&search_path=public", id_ingreso)
+	// var result2 map[string]interface{}
+	// err := json.Unmarshal(body, &result2)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
+	// resultado1, _ := services.ProcessarJsonArreglos(body)
+	// for i := range resultado1 {
+	// 	resultado1[i] = map[string]interface{}{
+	// 		"id": i + 1,
+	// 		"datos_ganado":  resultado1[i]["datos_ganado"],
+	// 	}
+	// 	fmt.Println("Response Body: ", string(body))
+	// 	fmt.Println("Los datos son: ", len(resultado1))
+	// 	c.Data["json"] = map[string]interface{}{"Success": true, "Status": 200, "Message": "Consulta correctamente", "Consulta de id": id_ingreso}
+	// 	c.ServeJSON()
+	// 	}
 
 }
+
 
 // GetAll ...
 // @Title GetAll
@@ -53,7 +79,7 @@ func (c *GanadoController) GetOne() {
 // @Failure 403
 // @router / [get]
 func (c *GanadoController) GetAll() {
-	 
+
 }
 
 // Put ...
