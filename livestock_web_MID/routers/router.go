@@ -29,6 +29,21 @@ func init() {
 				&controllers.GanadoController{},
 			),
 		),
+		beego.NSNamespace("/hacienda_lote",
+			beego.NSInclude(
+				&controllers.GanadoController{},
+			),
+		),
+		beego.NSNamespace("/historial_ventas",
+			beego.NSInclude(
+				&controllers.GanadoController{},
+			),
+		),
+		beego.NSNamespace("/tipo_ganado",
+			beego.NSInclude(
+				&controllers.GanadoController{},
+			),
+		),
 	)
 	beego.AddNamespace(ns)
 }

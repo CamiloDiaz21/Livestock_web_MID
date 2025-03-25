@@ -4,7 +4,9 @@ go 1.23.1
 
 require (
 	github.com/astaxie/beego v1.12.3
+	github.com/gorilla/mux v1.8.1
 	github.com/smartystreets/goconvey v1.8.1
+	gorm.io/gorm v1.25.12
 )
 
 require (
@@ -13,6 +15,8 @@ require (
 	github.com/golang/protobuf v1.4.2 // indirect
 	github.com/gopherjs/gopherjs v1.17.2 // indirect
 	github.com/hashicorp/golang-lru v0.5.4 // indirect
+	github.com/jinzhu/inflection v1.0.0 // indirect
+	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/jtolds/gls v4.20.0+incompatible // indirect
 	github.com/matttproud/golang_protobuf_extensions v1.0.1 // indirect
 	github.com/prometheus/client_golang v1.7.0 // indirect
@@ -24,7 +28,7 @@ require (
 	golang.org/x/crypto v0.0.0-20210711020723-a769d52b0f97 // indirect
 	golang.org/x/net v0.0.0-20210226172049-e18ecbb05110 // indirect
 	golang.org/x/sys v0.6.0 // indirect
-	golang.org/x/text v0.3.3 // indirect
+	golang.org/x/text v0.14.0 // indirect
 	google.golang.org/protobuf v1.23.0 // indirect
 	gopkg.in/yaml.v2 v2.2.8 // indirect
 )

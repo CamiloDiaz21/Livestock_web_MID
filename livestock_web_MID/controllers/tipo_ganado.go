@@ -1,7 +1,10 @@
 package controllers
 
 import (
+	"fmt"
+
 	"github.com/astaxie/beego"
+	"github.com/sena_2824182/Livestock_web_MID/livestock_web_MID/services"
 )
 
 // Tipo_ganadoController operations for Tipo_ganado
@@ -37,7 +40,34 @@ func (c *Tipo_ganadoController) Post() {
 // @Failure 403 :id is empty
 // @router /:id [get]
 func (c *Tipo_ganadoController) GetOne() {
-	
+	fmt.Println("Funcion Get")
+	id_ingreso := c.Ctx.Input.Param(":id") // para capturar el parametro del url /id
+
+	//asignacion de datos al body
+	body, _ := services.Metodo_get("Variable_api_TG", id_ingreso)
+
+	resultado, _ := services.ProcessarJson(body)
+	//----------------------------------------------------------------------------------------
+
+	var result2 map[string]interface{} // El JSON que esperas es un array de objetos
+
+	result2 = map[string]interface{}{
+		"Raza":     result2["NombreTipoGanado"],
+
+	}
+
+	//------------------------------------------------
+
+	//informacion de estado
+	fmt.Println("Los datos son:", len(result2))
+
+	c.Data["json"] = map[string]interface{}{
+		"Succes":          true,
+		"Status":          200,
+		"Message":         "Consulta existosa",
+		"Cantidad Cartas": len(resultado),
+	}
+	c.ServeJSON()
 }
 
 // GetAll ...

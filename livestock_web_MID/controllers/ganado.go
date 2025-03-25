@@ -1,9 +1,7 @@
 package controllers
 
 import (
-	"encoding/json"
 	"fmt"
-	"log"
 
 	"github.com/astaxie/beego"
 	"github.com/sena_2824182/Livestock_web_MID/livestock_web_MID/services"
@@ -43,28 +41,38 @@ func (c *GanadoController) Post() {
 // @router /:id [get]
 func (c *GanadoController) GetOne() {
 	fmt.Println("Funcion Get")
-	// id_ingreso := c.Ctx.Input.Param(":id")
-	// 	fmt.Println("El id ingresado es:", id_ingreso)
-	// body, _ := services.Metodo_get(  "postgres://postgres:postgres@127.0.0.1/DATOS_VENTAS?sslmode=disable&search_path=public", id_ingreso)
-	// var result2 map[string]interface{}
-	// err := json.Unmarshal(body, &result2)
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-	// resultado1, _ := services.ProcessarJsonArreglos(body)
-	// for i := range resultado1 {
-	// 	resultado1[i] = map[string]interface{}{
-	// 		"id": i + 1,
-	// 		"datos_ganado":  resultado1[i]["datos_ganado"],
-	// 	}
-	// 	fmt.Println("Response Body: ", string(body))
-	// 	fmt.Println("Los datos son: ", len(resultado1))
-	// 	c.Data["json"] = map[string]interface{}{"Success": true, "Status": 200, "Message": "Consulta correctamente", "Consulta de id": id_ingreso}
-	// 	c.ServeJSON()
-	// 	}
+	id_ingreso := c.Ctx.Input.Param(":id") // para capturar el parametro del url /id
 
+	//asignacion de datos al body
+	body, _ := services.Metodo_get("Variable_api_Ganado", id_ingreso)
+
+	resultado, _ := services.ProcessarJson(body)
+	//----------------------------------------------------------------------------------------
+
+	var result2 map[string]interface{} // El JSON que esperas es un array de objetos
+
+
+	result2 = map[string]interface{}{
+		"Datos":      		  result2["DatosGanado"],
+		"Vendedor":           result2["DatosVendedor"],
+		"Ubicacion":     	  result2["UbicacionGanando"],
+		"Categoria": 		  result2["CategoriaGanado"],
+	}
+
+	//------------------------------------------------
+
+
+	//informacion de estado
+	fmt.Println("Los datos son:", len(result2))
+
+	c.Data["json"] = map[string]interface{}{
+		"Succes":          true,
+		"Status":          200,
+		"Message":         "Consulta existosa",
+		"Cantidad Cartas": len(resultado),
+	}
+	c.ServeJSON()
 }
-
 
 // GetAll ...
 // @Title GetAll
