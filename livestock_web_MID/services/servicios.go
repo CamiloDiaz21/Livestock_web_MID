@@ -123,3 +123,27 @@ func main() {
 	// Imprimir los datos en formato JSON
 	fmt.Println("Datos JSON obtenidos:", string(jsonData))
 }
+func EliminarGanado(id string) error {
+	// Definir la consulta SQL para eliminar el recurso con el ID especificado
+	query := "DELETE FROM ganado WHERE id = ?"
+
+	// Ejecutar la consulta
+	result, err := db.Exec(query, id)
+	if err != nil {
+		return fmt.Errorf("error al ejecutar la consulta de eliminación: %v", err)
+	}
+
+	// Verificar cuántas filas fueron afectadas (debería ser 1 si el recurso fue eliminado correctamente)
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		return fmt.Errorf("error al obtener las filas afectadas: %v", err)
+	}
+
+	if rowsAffected == 0 {
+		// Si no se encontró el ID en la base de datos
+		return fmt.Errorf("ningún registro encontrado con el ID proporcionado: %v", id)
+	}
+
+	// Retornar nil si la eliminación fue exitosa
+	return nil
+}
