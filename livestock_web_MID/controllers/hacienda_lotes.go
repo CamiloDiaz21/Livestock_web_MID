@@ -85,7 +85,58 @@ func (c *Hacienda_lotesController) GetOne() {
 // @Failure 403
 // @router / [get]
 func (c *Hacienda_lotesController) GetAll() {
+	fmt.Println("Funcion GetAll")
+    
+    // Llamada a un servicio (puedes cambiar "Variable_api_Ganado" por el nombre adecuado)
+    body, err := services.Metodo_get("Variable_api_Ganado", "")
+    if err != nil {
+        fmt.Println("Error al obtener los datos:", err)
+        c.Data["json"] = map[string]interface{}{
+            "Succes":  false,
+            "Status":  500,
+            "Message": err.Error(),
+        }
+        c.ServeJSON()
+        return
+    }
 
+    fmt.Println("body que ingresa: ", string(body))
+
+    // Procesar los datos obtenidos
+    resultado, err := services.ProcessarJsonArreglos(body)
+    if err != nil {
+        fmt.Println("Error al procesar los datos:", err)
+        c.Data["json"] = map[string]interface{}{
+            "Succes":  false,
+            "Status":  500,
+            "Message": err.Error(),
+        }
+        c.ServeJSON()
+        return
+    }
+
+    fmt.Println("este es el resultado:", resultado)
+
+    // Procesar la respuesta para devolver solo los datos necesarios
+    for i := range resultado {
+        resultado[i] = map[string]interface{}{
+            "Datos":     resultado[i]["DatosLugar"],
+            "Vendedor":  resultado[i]["DatosVendedor"],
+            "Ubicacion": resultado[i]["UbicacionLugar"],
+            "Tamaño": resultado[i]["TamañoLugar"],
+        }
+    }
+
+    // Devolver los datos procesados
+    c.Data["json"] = map[string]interface{}{
+        "Succes":            true,
+        "Status":            200,
+        "Message":           "Consulta exitosa",
+        "Cantidad de datos": len(resultado),
+        "Datos":             resultado,
+    }
+
+    c.ServeJSON()
 }
 
 // Put ...

@@ -97,32 +97,25 @@ func (c *GanadoController) Post() {
 	c.ServeJSON()
 }
 
+
 // GetOne ...
 // @Title GetOne
 // @Description get Ganado by id
 // @Param	id		path 	string	true		"The key for staticblock"
-//@Param	id_2  query int true "este es el segundo parametro"
+// @Param	id_2		path 	string	true		"The key for staticblock"
 // @Success 200 {object} models.Ganado
 // @Failure 403 :id is empty
-// @router /:id/:id_2 [get
-
+// @router /:id/:id_2 [get]
 func (c *GanadoController) GetOne() {
 	fmt.Println("Funcion Get")
-	id_ingreso, id_ingreso2 := c.Ctx.Input.Param(":id"), c.Ctx.Input.Param(":id_2")
-	fmt.Println("este es el segundo parametro:", id_ingreso2)
+	id_ingreso:= c.Ctx.Input.Param(":id")
+	//fmt.Println("este es el segundo parametro:", id_ingreso2)
 
 	// Obtener datos del servicio
-	body, err := services.Metodo_get("Variable_api_Ganado", id_ingreso)
-	if err != nil {
-		fmt.Println("Error al obtener los datos:", err)
-		c.Data["json"] = map[string]interface{}{
-			"Succes":  false,
-			"Status":  500,
-			"Message": err.Error(),
-		}
-		c.ServeJSON()
-		return
-	}
+	body, _ := services.Metodo_get("Variable_api_Ganado",id_ingreso)
+
+	fmt.Println("body:", string(body))
+
 
 	fmt.Println("body que ingresa: ", string(body))
 
@@ -157,7 +150,7 @@ func (c *GanadoController) GetOne() {
 		"Status":            200,
 		"Message":           "Consulta exitosa",
 		"Cantidad de datos": len(resultado1),
-		"Datos":             resultado1,
+		"Datos":             body,
 	}
 
 	c.ServeJSON()
@@ -176,7 +169,58 @@ func (c *GanadoController) GetOne() {
 // @Failure 403
 // @router / [get]
 func (c *GanadoController) GetAll() {
+	fmt.Println("Funcion GetAll")
+    
+    // Llamada a un servicio (puedes cambiar "Variable_api_Ganado" por el nombre adecuado)
+    body, err := services.Metodo_get("Variable_api_Ganado", "")
+    if err != nil {
+        fmt.Println("Error al obtener los datos:", err)
+        c.Data["json"] = map[string]interface{}{
+            "Succes":  false,
+            "Status":  500,
+            "Message": err.Error(),
+        }
+        c.ServeJSON()
+        return
+    }
 
+    fmt.Println("body que ingresa: ", string(body))
+
+    // Procesar los datos obtenidos
+    resultado, err := services.ProcessarJsonArreglos(body)
+    if err != nil {
+        fmt.Println("Error al procesar los datos:", err)
+        c.Data["json"] = map[string]interface{}{
+            "Succes":  false,
+            "Status":  500,
+            "Message": err.Error(),
+        }
+        c.ServeJSON()
+        return
+    }
+
+    fmt.Println("este es el resultado:", resultado)
+
+    // Procesar la respuesta para devolver solo los datos necesarios
+    for i := range resultado {
+        resultado[i] = map[string]interface{}{
+            "Datos":     resultado[i]["DatosGanado"],
+            "Vendedor":  resultado[i]["DatosVendedor"],
+            "categoria": resultado[i]["CategoriaGanado"],
+            "Ubicacion": resultado[i]["UbicacionGanando"],
+        }
+    }
+
+    // Devolver los datos procesados
+    c.Data["json"] = map[string]interface{}{
+        "Succes":            true,
+        "Status":            200,
+        "Message":           "Consulta exitosa",
+        "Cantidad de datos": len(resultado),
+        "Datos":             resultado,
+    }
+
+    c.ServeJSON()
 }
 
 // Put ...
@@ -199,5 +243,30 @@ func (c *GanadoController) Put() {
 // @Failure 403 id is empty
 // @router /:id [delete]
 func (c *GanadoController) Delete() {
+	fmt.Println("Funcion Delete")
+	id_ingreso := c.Ctx.Input.Param(":id") // para capturar el parametro del url /id
 
+	// Llamamos al servicio para eliminar el recurso con el ID especificado
+	// Aquí deberías incluir la lógica para eliminar el recurso
+	// (por ejemplo, una llamada a un servicio o base de datos para eliminar el dato)
+
+	err := services.EliminarGanado(id_ingreso) // Ejemplo de función para eliminar el ganado
+	if err != nil {
+		// Si ocurre un error durante la eliminación
+		c.Data["json"] = map[string]interface{}{
+			"Succes":  false,
+			"Status":  500,
+			"Message": "Error al eliminar el recurso",
+		}
+		c.ServeJSON()
+		return
+	}
+
+	// Respuesta de éxito
+	c.Data["json"] = map[string]interface{}{
+		"Succes":  true,
+		"Status":  200,
+		"Message": "Recurso eliminado correctamente",
+	}
+	c.ServeJSON()
 }

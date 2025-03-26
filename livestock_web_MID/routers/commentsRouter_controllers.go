@@ -43,6 +43,15 @@ func init() {
             Filters: nil,
             Params: nil})
 
+    beego.GlobalControllerRouter["github.com/sena_2824182/Livestock_web_MID/livestock_web_MID/controllers:GanadoController"] = append(beego.GlobalControllerRouter["github.com/sena_2824182/Livestock_web_MID/livestock_web_MID/controllers:GanadoController"],
+        beego.ControllerComments{
+            Method: "GetOne",
+            Router: "/:id/:id_2",
+            AllowHTTPMethods: []string{"get"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
     beego.GlobalControllerRouter["github.com/sena_2824182/Livestock_web_MID/livestock_web_MID/controllers:Hacienda_lotesController"] = append(beego.GlobalControllerRouter["github.com/sena_2824182/Livestock_web_MID/livestock_web_MID/controllers:Hacienda_lotesController"],
         beego.ControllerComments{
             Method: "Post",
