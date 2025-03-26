@@ -14,6 +14,7 @@ import (
 func Metodo_get(nombre_servicio, parametro string) ([]byte, error) {
 	url := beego.AppConfig.String(nombre_servicio) + parametro
 	resp, err := http.Get(url)
+	fmt.Println("esta es la url:",url)
 	if err != nil {
 		return nil, err
 	}
@@ -22,7 +23,7 @@ func Metodo_get(nombre_servicio, parametro string) ([]byte, error) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	return body, nil
+	return body,  fmt.Errorf("URL del servicio no encontrada en la configuración")
 }
 
 func ProcessarJsonArreglos(datos []byte) ([]map[string]interface{}, error) {
@@ -86,4 +87,39 @@ func Metodo_put(nombre_servicio string, id string, data []byte) ([]byte, error) 
 		log.Fatal(err)
 	}
 	return body, nil
+}
+
+func ObtenerJSONDesdeAPI(url string) ([]byte, error) {
+	// Hacer la petición HTTP GET
+	resp, err := http.Get(url)
+	if err != nil {
+		return nil, fmt.Errorf("error en la solicitud HTTP: %v", err)
+	}
+	defer resp.Body.Close()
+
+	// Leer la respuesta
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("error al leer la respuesta: %v", err)
+	}
+
+	// Verificar si la respuesta está vacía
+	if len(body) == 0 {
+		return nil, fmt.Errorf("respuesta vacía del servidor")
+	}
+
+	return body, nil
+}
+
+func main() {
+
+	// Obtener los datos JSON
+	jsonData, err := ObtenerJSONDesdeAPI("localhost:8083/v1/ganado")
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+
+	// Imprimir los datos en formato JSON
+	fmt.Println("Datos JSON obtenidos:", string(jsonData))
 }
