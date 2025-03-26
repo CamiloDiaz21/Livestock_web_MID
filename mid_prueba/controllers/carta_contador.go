@@ -117,7 +117,13 @@ func (c *Carta_contadorController) GetOne() {
 	resultado := append(resultado1, result2)
 	fmt.Println("Response Body: ", string(body))
 	fmt.Println("La cantidad de datos son: ", len(resultado1))
-	c.Data["json"] = map[string]interface{}{"Succes": true, "Status": 200, "Message": "Consulta existosa", "Data": resultado, "Cantidad cartas": len(resultado), "usuario": len(result2)}
+	c.Data["json"] = map[string]interface{}{
+		"Succes": true, 
+		"Status": 200, 
+		"Message": "Consulta existosa", 
+		"Data": resultado, 
+		"Cantidad cartas": len(resultado), 
+		"usuario": len(result2)}
 	c.ServeJSON()
 }
 
