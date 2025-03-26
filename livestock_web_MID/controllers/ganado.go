@@ -101,7 +101,7 @@ func (c *GanadoController) Post() {
 // @Title GetOne
 // @Description get Ganado by id
 // @Param	id		path 	string	true		"The key for staticblock"
-//@Param	id_2  query int true "este es el segundo parametro"
+// @Param	id_2    query   string  true        "este es el segundo parametro"
 // @Success 200 {object} models.Ganado
 // @Failure 403 :id is empty
 // @router /:id/:id_2 [get
@@ -110,9 +110,10 @@ func (c *GanadoController) GetOne() {
 	fmt.Println("Funcion Get")
 	id_ingreso, id_ingreso2 := c.Ctx.Input.Param(":id"), c.Ctx.Input.Param(":id_2")
 	fmt.Println("este es el segundo parametro:", id_ingreso2)
+	fmt.Println("prueba", id_ingreso)
 
 	// Obtener datos del servicio
-	body, err := services.Metodo_get("Variable_api_Ganado", id_ingreso)
+	body, err := services.Metodo_get("Variable_api_Ganado", id_ingreso2)
 	if err != nil {
 		fmt.Println("Error al obtener los datos:", err)
 		c.Data["json"] = map[string]interface{}{
