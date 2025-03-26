@@ -110,7 +110,7 @@ func (c *GanadoController) GetOne() {
 	fmt.Println("Funcion Get")
 	id_ingreso, id_ingreso2 := c.Ctx.Input.Param(":id"), c.Ctx.Input.Param(":id_2")
 	fmt.Println("este es el segundo parametro:", id_ingreso2)
-	fmt.Println("prueba", id_ingreso)
+	fmt.Println("prue", id_ingreso)
 
 	// Obtener datos del servicio
 	body, err := services.Metodo_get("Variable_api_Ganado", id_ingreso2)
