@@ -1,7 +1,12 @@
 package controllers
 
 import (
+	"encoding/json"
+	"fmt"
+
 	"github.com/astaxie/beego"
+	"github.com/sena_2824182/Livestock_web_MID/livestock_web_MID/models"
+	"github.com/sena_2824182/Livestock_web_MID/livestock_web_MID/services"
 )
 
 // Registro_usvendedorController operations for Registro_usvendedor
@@ -26,7 +31,70 @@ func (c *Registro_usvendedorController) URLMapping() {
 // @Failure 403 body is empty
 // @router / [post]
 func (c *Registro_usvendedorController) Post() {
+	var body_ingresa []map[string]interface{}
+	var alerta models.Alert
+	var temporal []byte
+	var temporal_producto []byte
 
+	if err := json.Unmarshal(c.Ctx.Input.RequestBody, &body_ingresa); err == nil {
+		fmt.Println("body que ingresa: ", body_ingresa)
+
+		jsonData, err := json.MarshalIndent(body_ingresa, "", " ")
+		if err != nil {
+			fmt.Println("Error al convertir Json", err)
+		}
+
+		json_usuario := body_ingresa[0]
+		json_producto := body_ingresa[1]
+		fmt.Println("Body usuario:", json_usuario)
+		fmt.Println("Body producto:", json_producto)
+
+		json_usuario_byte, err := json.Marshal(json_usuario)
+		if err != nil {
+			fmt.Println("Error al convertir usuario a JSON:", err)
+			return
+		}
+		response_usuario, err := services.Metodo_post("servicio_post", json_usuario_byte)
+		if err != nil {
+			fmt.Println("Error en Metodo_post para usuario:", err)
+			return
+		}
+
+		json_producto_byte, err := json.Marshal(json_producto)
+		if err != nil {
+			fmt.Println("Error al convertir producto a JSON:", err)
+			return
+		}
+		response_producto, err := services.Metodo_post("servicio_post", json_producto_byte)
+		if err != nil {
+			fmt.Println("Error en Metodo_post para producto:", err)
+			return
+		}
+
+		temporal = response_usuario
+		temporal_producto = response_producto
+
+		fmt.Println("Esto responde el post de producto:", string(response_producto))
+		fmt.Println("Esto responde el post de usuario", string(response_usuario))
+		fmt.Println("Body de ingreso en Json:", string(jsonData))
+	}
+
+	var temporal2 map[string]interface{}
+	var temporal3 map[string]interface{}
+
+	if err := json.Unmarshal(temporal, &temporal2); err != nil {
+		fmt.Println("Error al deserializar response_usuario:", err)
+		return
+	}
+	if err := json.Unmarshal(temporal_producto, &temporal3); err != nil {
+		fmt.Println("Error al deserializar response_producto:", err)
+		return
+	}
+
+	alerta.Code = "201"
+	alerta.Type = "Post"
+	c.Data["json"] = alerta
+	c.ServeJSON()
 }
 
 // GetOne ...

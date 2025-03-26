@@ -12,9 +12,9 @@ import (
 )
 
 func Metodo_get(nombre_servicio, parametro string) ([]byte, error) {
-	url := beego.AppConfig.String(nombre_servicio) + parametro
+	url := beego.AppConfig.String(nombre_servicio) + parametro + parametro
 	resp, err := http.Get(url)
-	fmt.Println("esta es la url:",url)
+	fmt.Println("esta es la url:", url)
 	if err != nil {
 		return nil, err
 	}
@@ -23,7 +23,7 @@ func Metodo_get(nombre_servicio, parametro string) ([]byte, error) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	return body,  fmt.Errorf("URL del servicio no encontrada en la configuración")
+	return body, fmt.Errorf("URL del servicio no encontrada en la configuración")
 }
 
 func ProcessarJsonArreglos(datos []byte) ([]map[string]interface{}, error) {
@@ -123,6 +123,3 @@ func main() {
 	// Imprimir los datos en formato JSON
 	fmt.Println("Datos JSON obtenidos:", string(jsonData))
 }
-
-
-
